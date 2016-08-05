@@ -15,10 +15,10 @@
   <div>
     <label for="category">Categoría:</label>
     <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Ingreso'">
-      <option *ngFor="let category of entryCategories" [value]="category">{{category}}</option>
+      <option *ngFor="let category of movementsService.entryCategories" [value]="category">{{category}}</option>
     </select>
     <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Gasto'">
-      <option *ngFor="let category of spendingCategories" [value]="category">{{category}}</option>
+      <option *ngFor="let category of movementsService.spendingCategories" [value]="category">{{category}}</option>
     </select>
   </div>
   
@@ -54,7 +54,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let m of movements ">
+    <tr *ngFor="let m of movementsService.movements ">
       <td>{{stringToDate(m.date) | date:"dd-MM-yyyy"}}</td>
       <td>{{m.kind}}</td>
       <td>{{m.category}}</td>
@@ -67,19 +67,19 @@
 
 <div class="positive">
   <span>Ingresos:</span>
-  <span>{{incomes}}</span>
+  <span>{{movementsService.incomes}}</span>
 </div>
 
 <p></p>
 
 <div class="negative">
   <span>Gastos:</span>
-  <span>{{expenses}}</span>
+  <span>{{movementsService.expenses}}</span>
 </div>
 
 <p></p>
 
-<div [ngClass]="{positive: balance >=0 , negative: balance < 0}">
+<div [ngClass]="{positive: movementsService.balance >=0 , negative: movementsService.balance < 0}">
   <span>Balance:</span>
-  <span>{{balance}}</span>
+  <span>{{movementsService.balance}}</span>
 </div>
