@@ -1,0 +1,18 @@
+<div class="positive">
+  <span>Ingresos:</span>
+  <span>{{incomes}}</span>
+</div>
+
+<p></p>
+
+<div class="negative">
+  <span>Gastos:</span>
+  <span>{{expenses}}</span>
+</div>
+
+<p></p>
+
+<div [ngClass]="{positive: incomes >= expenses , negative: incomes < expenses}">
+  <span>Balance:</span>
+  <span>{{incomes - expenses}}</span>
+</div>

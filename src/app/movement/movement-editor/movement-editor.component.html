@@ -1,0 +1,39 @@
+<form>
+
+  <div>
+    <label for="kind">Tipo:</label>
+    <input type="radio" [checked]="movement.kind == 'Ingreso'" (change)="movement.kind = 'Ingreso'" /> Ingreso
+    <input type="radio" [checked]="movement.kind == 'Gasto'" (change)="movement.kind = 'Gasto'" /> Gasto
+  </div>
+
+  <p></p>
+
+  <div>
+    <label for="category">Categoría:</label>
+    <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Ingreso'">
+      <option *ngFor="let category of movementsService.entryCategories" [value]="category">{{category}}</option>
+    </select>
+    <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Gasto'">
+      <option *ngFor="let category of movementsService.spendingCategories" [value]="category">{{category}}</option>
+    </select>
+  </div>
+  
+  <p></p>
+
+  <div>
+    <label for="date">Fecha:</label>
+    <input type="date" [(ngModel)]="movement.date">
+  </div>
+
+  <p></p>
+
+  <div>
+    <label for="amount">Importe:</label>
+    <input type="number" [(ngModel)]="movement.amount">
+  </div>
+  
+  <p></p>
+  
+  <button (click)="saveMovement()">Guardar {{movement.kind}}</button>
+
+</form>

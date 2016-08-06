@@ -1,11 +1,15 @@
 import { Component, provide } from '@angular/core';
 import { MovementsService, MovementModel } from '../shared';
+import { MovementEditorComponent } from './movement-editor';
+import { MovementListComponent } from './movement-list';
+import { MovementBalanceComponent } from './movement-balance';
 
 @Component({
   moduleId: module.id,
   selector: 'app-movement',
   templateUrl: 'movement.component.html',
   styleUrls: ['movement.component.css'],
+  directives: [MovementEditorComponent, MovementListComponent, MovementBalanceComponent],
   providers: [
     MovementsService,
     provide(MovementModel, { useValue: {
@@ -18,22 +22,10 @@ import { MovementsService, MovementModel } from '../shared';
 })
 export class MovementComponent {
 
-  sortDirection: number = 1;
-
   constructor(private movementsService: MovementsService, private movement: MovementModel) { }
-  
-  saveMovement() {
-    this.movementsService.saveMovement(this.movement);
-  }
 
-  orderBy(field: string) {
-    this.sortDirection = -1 * this.sortDirection
-    this.movementsService.movements.sort((a, b) => a[field] < b[field] ? this.sortDirection : -1 * this.sortDirection)
-  }
-
- // TODO: utility functions move to an injectable class in a common file
-  stringToDate(string: string) {
-    return new Date(string)
+  onSelectMovement(movementReceivedFromMySon: MovementModel) {
+    this.movement = movementReceivedFromMySon;
   }
 
 }

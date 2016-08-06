@@ -1,85 +1,9 @@
-<p>
-  movement works!
-</p>
-
-<form>
-
-  <div>
-    <label for="kind">Tipo:</label>
-    <input type="radio" [checked]="movement.kind == 'Ingreso'" (change)="movement.kind = 'Ingreso'" /> Ingreso
-    <input type="radio" [checked]="movement.kind == 'Gasto'" (change)="movement.kind = 'Gasto'" /> Gasto
-  </div>
-
-  <p></p>
-
-  <div>
-    <label for="category">Categoría:</label>
-    <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Ingreso'">
-      <option *ngFor="let category of movementsService.entryCategories" [value]="category">{{category}}</option>
-    </select>
-    <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Gasto'">
-      <option *ngFor="let category of movementsService.spendingCategories" [value]="category">{{category}}</option>
-    </select>
-  </div>
-  
-  <p></p>
-
-  <div>
-    <label for="date">Fecha:</label>
-    <input type="date" [(ngModel)]="movement.date">
-  </div>
-
-  <p></p>
-
-  <div>
-    <label for="amount">Importe:</label>
-    <input type="number" [(ngModel)]="movement.amount">
-  </div>
-  
-  <p></p>
-  
-  <button (click)="saveMovement()">Guardar {{movement.kind}}</button>
-
-</form>
+<app-movement-editor [movementToEdit]="movement"></app-movement-editor>
 
 <hr/>
 
-<table>
-  <thead>
-    <tr>
-      <th (click)="orderBy('date')">Fecha</th>
-      <th>Tipo</th>
-      <th>Categoría</th>
-      <th (click)="orderBy('amount')">Importe</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let m of movementsService.movements ">
-      <td>{{stringToDate(m.date) | date:"dd-MM-yyyy"}}</td>
-      <td>{{m.kind}}</td>
-      <td>{{m.category}}</td>
-      <td [ngClass]="{positive: m.kind == 'Ingreso', negative: m.kind == 'Gasto'}">{{m.amount | number}} €</td>
-    </tr>
-  </tbody>
-</table>
+<app-movement-list (selectMovement)="onSelectMovement($event)"></app-movement-list>
 
 <hr/>
 
-<div class="positive">
-  <span>Ingresos:</span>
-  <span>{{movementsService.incomes}}</span>
-</div>
-
-<p></p>
-
-<div class="negative">
-  <span>Gastos:</span>
-  <span>{{movementsService.expenses}}</span>
-</div>
-
-<p></p>
-
-<div [ngClass]="{positive: movementsService.balance >=0 , negative: movementsService.balance < 0}">
-  <span>Balance:</span>
-  <span>{{movementsService.balance}}</span>
-</div>
+<app-movement-balance [incomes]="movementsService.incomes" [expenses]="movementsService.expenses"></app-movement-balance>
