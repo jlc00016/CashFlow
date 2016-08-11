@@ -14,6 +14,7 @@ export class MovementListComponent implements OnInit {
   sortDirection: number = 1;
   
   @Output() selectMovement = new EventEmitter();
+  //@Output() selectMovement: EventEmitter<MovementModel> = new EventEmitter()
 
   constructor(private movementsService: MovementsService) { }
 
