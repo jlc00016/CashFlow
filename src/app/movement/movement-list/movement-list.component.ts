@@ -34,4 +34,8 @@ export class MovementListComponent implements OnInit {
     this.selectMovement.emit(selectedMovement);
   }
 
+  delete(selectedMovement: MovementModel) {
+    this.movementsService.deleteMovement(selectedMovement);
+  }
+
 }

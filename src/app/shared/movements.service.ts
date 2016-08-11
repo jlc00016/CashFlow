@@ -21,18 +21,24 @@ export class MovementsService {
       this.movements[index] = movement;
     }
     
-    this.calculateBalance(movement);
+    this.calculateBalance();
   }
 
-  calculateBalance(newMovement: MovementModel) {
+  calculateBalance() {
     this.incomes = this.movements.reduce((previous, current) => current.kind === 'Ingreso' ? previous + current.amount : previous, 0);
     this.expenses = this.movements.reduce((previous, current) => current.kind === 'Gasto' ? previous + current.amount : previous, 0);
-    this.balance = this.incomes - this.expenses
+    this.balance = this.incomes - this.expenses;
   }
 
   getMovement(id: string) {
     let movementFound = this.movements.find(m => m.id == id);
     return movementFound;
+  }
+
+  deleteMovement(movement: MovementModel) {
+    let index = this.movements.findIndex((m) => m.id === movement.id);
+    this.movements.splice(index, 1);
+    this.calculateBalance();
   }
 
 }
