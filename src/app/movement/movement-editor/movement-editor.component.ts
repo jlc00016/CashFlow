@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MovementModel, MovementsService } from '../../shared';
+import { ActivatedRoute } from '@angular/router' 
 
 @Component({
   moduleId: module.id,
@@ -11,9 +12,15 @@ export class MovementEditorComponent implements OnInit {
   
   @Input('movementToEdit') movement: MovementModel;
 
-  constructor(private movementsService: MovementsService) { }
+  constructor(private movementsService: MovementsService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    let id = this.activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.movement = this.movementsService.getMovement(id);
+    } else {
+      this.movement = this.createMovement();
+    }
   }
   
   saveMovement() {
@@ -23,7 +30,7 @@ export class MovementEditorComponent implements OnInit {
   
   createMovement() {
     return {
-      id: '',
+      id: new Date().getTime().toString(),
       kind: "Ingreso",
       category: "Nómina",
       date: new Date(),

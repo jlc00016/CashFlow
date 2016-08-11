@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { MovementComponent } from './movement'
+import { ROUTER_DIRECTIVES} from '@angular/router';  
+import { MovementsService } from './shared/';
 
 @Component({
   moduleId: module.id,
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
-  directives: [MovementComponent]
+  directives: [ROUTER_DIRECTIVES],
+  providers: [MovementsService]
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Cash Flow works!';
 }

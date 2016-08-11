@@ -11,9 +11,8 @@ import { MovementBalanceComponent } from './movement-balance';
   styleUrls: ['movement.component.css'],
   directives: [MovementEditorComponent, MovementListComponent, MovementBalanceComponent],
   providers: [
-    MovementsService,
     provide(MovementModel, { useValue: {
-      id: new Date().toDateString(),
+      id: new Date().getTime().toString(),
       kind: "Ingreso",
       category: "Nómina",
       date: new Date(),

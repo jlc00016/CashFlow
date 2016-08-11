@@ -5,7 +5,8 @@
       <th>Tipo</th>
       <th>Categoría</th>
       <th (click)="orderBy('amount')">Importe</th>
-      <th></th>
+      <th>Editor</th>
+      <th>Enlace a editor</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,7 @@
       <td>{{m.category}}</td>
       <td [ngClass]="{positive: m.kind == 'Ingreso', negative: m.kind == 'Gasto'}">{{m.amount | number}} €</td>
       <td><button type="button" (click)="select(m)">Editar</button></td>
+      <td><a [routerLink]="['/movimiento', m.id]">{{m.id}}</a></td>
     </tr>
   </tbody>
 </table>

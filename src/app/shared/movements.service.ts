@@ -13,13 +13,26 @@ export class MovementsService {
   constructor() { }
   
   saveMovement(movement: MovementModel) {
-    if (movement.kind === 'Ingreso') {
-      this.incomes += movement.amount;
+    let index = this.movements.findIndex((m) => m.id === movement.id);
+
+    if (index === -1) {
+      this.movements.push(Object.assign({}, movement));
     } else {
-      this.expenses += movement.amount;
+      this.movements[index] = movement;
     }
-    this.balance = this.incomes - this.expenses;
-    this.movements.push(Object.assign({}, movement));
+    
+    this.calculateBalance(movement);
+  }
+
+  calculateBalance(newMovement: MovementModel) {
+    this.incomes = this.movements.reduce((previous, current) => current.kind === 'Ingreso' ? previous + current.amount : previous, 0);
+    this.expenses = this.movements.reduce((previous, current) => current.kind === 'Gasto' ? previous + current.amount : previous, 0);
+    this.balance = this.incomes - this.expenses
+  }
+
+  getMovement(id: string) {
+    let movementFound = this.movements.find(m => m.id == id);
+    return movementFound;
   }
 
 }
