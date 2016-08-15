@@ -11,10 +11,10 @@
   <div>
     <label for="category">Categoría:</label>
     <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Ingreso'">
-      <option *ngFor="let category of movementsService.entryCategories" [value]="category">{{category}}</option>
+      <option *ngFor="let category of masters.entryCategories" [value]="category">{{category}}</option>
     </select>
     <select [(ngModel)]="movement.category" *ngIf="movement.kind === 'Gasto'">
-      <option *ngFor="let category of movementsService.spendingCategories" [value]="category">{{category}}</option>
+      <option *ngFor="let category of masters.spendingCategories" [value]="category">{{category}}</option>
     </select>
   </div>
   

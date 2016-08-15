@@ -1,44 +1,46 @@
 import { Injectable } from '@angular/core';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class MovementsService {
   
-  entryCategories: string[] = ['Nómina', 'Venta', 'Interés', 'Impuesto'];
-  spendingCategories: string[] = ['Hipoteca', 'Compra', 'Interés', 'Impuesto'];
-  movements: MovementModel[] = [];
-  incomes: number = 0;
-  expenses: number = 0;
-  balance: number = 0;
+  baseUrl: string = 'http://localhost:3000';
 
-  constructor() { }
-  
-  saveMovement(movement: MovementModel) {
-    let index = this.movements.findIndex((m) => m.id === movement.id);
-
-    if (index === -1) {
-      this.movements.push(Object.assign({}, movement));
-    } else {
-      this.movements[index] = movement;
-    }
+  constructor(private http: Http) { }
     
-    this.calculateBalance();
+  getMasters(): Observable<Response> {
+    return this.http
+      .get(`${this.baseUrl}/maestros`)
   }
 
-  calculateBalance() {
-    this.incomes = this.movements.reduce((previous, current) => current.kind === 'Ingreso' ? previous + current.amount : previous, 0);
-    this.expenses = this.movements.reduce((previous, current) => current.kind === 'Gasto' ? previous + current.amount : previous, 0);
-    this.balance = this.incomes - this.expenses;
+  saveMovement(movement: MovementModel) {
+    let body = JSON.stringify(movement);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+ 
+    if (movement.id && movement.id !== '_') {
+      return this.http
+        .put(`${this.baseUrl}/movimientos/${movement.id}`, body, options)
+    } else {
+      return this.http
+        .post(`${this.baseUrl}/movimientos`, body, options)
+    }
   }
 
-  getMovement(id: string) {
-    let movementFound = this.movements.find(m => m.id == id);
-    return movementFound;
+  getMovements(): Observable<Response> {
+    return this.http
+      .get(`${this.baseUrl}/movimientos`)
   }
 
-  deleteMovement(movement: MovementModel) {
-    let index = this.movements.findIndex((m) => m.id === movement.id);
-    this.movements.splice(index, 1);
-    this.calculateBalance();
+  getMovementById(id: string): Observable<Response> {
+    return this.http
+      .get(`${this.baseUrl}/movimientos/${id}`)
+  }
+
+  getTotals(): Observable<Response> {
+    return this.http
+      .get(`${this.baseUrl}/movimientos/totales`)
   }
 
 }

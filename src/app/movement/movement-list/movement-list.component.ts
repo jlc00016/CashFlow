@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MovementsService, MovementModel } from '../../shared';
 import { ROUTER_DIRECTIVES} from '@angular/router';
 
@@ -11,32 +11,27 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
 })
 export class MovementListComponent implements OnInit {
   
+  movements = [];
   sortDirection: number = 1;
-  
-  @Output() selectMovement = new EventEmitter();
-  //@Output() selectMovement: EventEmitter<MovementModel> = new EventEmitter()
 
   constructor(private movementsService: MovementsService) { }
 
   ngOnInit() {
+    this.movementsService.getMovements()
+      .subscribe(res => {
+        if(res.status==200)
+          this.movements = res.json() || []
+      })
   }
 
   orderBy(field: string) {
     this.sortDirection = -1 * this.sortDirection
-    this.movementsService.movements.sort((a, b) => a[field] < b[field] ? this.sortDirection : -1 * this.sortDirection)
+    this.movements.sort((a, b) => a[field] < b[field] ? this.sortDirection : -1 * this.sortDirection)
   }
 
    // TODO: utility functions move to an injectable class in a common file
   stringToDate(string: string) {
     return new Date(string)
-  }
-
-  select(selectedMovement: MovementModel) {
-    this.selectMovement.emit(selectedMovement);
-  }
-
-  delete(selectedMovement: MovementModel) {
-    this.movementsService.deleteMovement(selectedMovement);
   }
 
 }

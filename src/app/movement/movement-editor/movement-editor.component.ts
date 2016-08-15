@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MovementModel, MovementsService } from '../../shared';
-import { ActivatedRoute } from '@angular/router' 
+import { ActivatedRoute, Router } from '@angular/router' 
 
 @Component({
   moduleId: module.id,
@@ -10,27 +10,51 @@ import { ActivatedRoute } from '@angular/router'
 })
 export class MovementEditorComponent implements OnInit {
   
-  @Input('movementToEdit') movement: MovementModel;
+  movement: MovementModel;
+  masters = {};
 
-  constructor(private movementsService: MovementsService, private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private movementsService: MovementsService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    this.movement = this.createMovement();
+  }
 
   ngOnInit() {
+
+    this.movementsService
+      .getMasters()
+      .subscribe(res => {
+        this.masters = res.json()
+      })
+
     let id = this.activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.movement = this.movementsService.getMovement(id);
+    if (id && id !== '_') {
+      this.movementsService
+        .getMovementById(id)
+        .subscribe(res => {
+          if (res.status == 200) {
+            this.movement = res.json() || {}
+          }
+        });
     } else {
       this.movement = this.createMovement();
     }
   }
   
   saveMovement() {
-    this.movementsService.saveMovement(this.movement);
-    this.movement = this.createMovement();
+    this.movementsService
+      .saveMovement(this.movement)
+      .subscribe(res => {
+        this.router.navigate(['/'])
+        return false
+      });
   }
   
   createMovement() {
     return {
-      id: new Date().getTime().toString(),
+      id: '',
       kind: "Ingreso",
       category: "Nómina",
       date: new Date(),

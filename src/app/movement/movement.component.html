@@ -1,9 +1,5 @@
-<app-movement-editor [movementToEdit]="movement"></app-movement-editor>
+<app-movement-list></app-movement-list>
 
 <hr/>
 
-<app-movement-list (selectMovement)="onSelectMovement($event)"></app-movement-list>
-
-<hr/>
-
-<app-movement-balance [incomes]="movementsService.incomes" [expenses]="movementsService.expenses"></app-movement-balance>
+<app-movement-balance [incomes]="totals.incomes" [expenses]="totals.expenses"></app-movement-balance>
