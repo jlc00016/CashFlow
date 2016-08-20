@@ -11,7 +11,7 @@
   <tbody>
     <tr *ngFor="let m of movements ">
       <td>{{stringToDate(m.date) | date:"dd-MM-yyyy"}}</td>
-      <td>{{m.kind}}</td>
+      <td>{{m.kind | capitalize}}</td>
       <td>{{m.category}}</td>
       <td [ngClass]="{positive: m.kind == 'Ingreso', negative: m.kind == 'Gasto'}">{{m.amount | number}} €</td>
       <td class="ta-right"><a [routerLink]="['/movimiento', m.id]">{{m.id}}</a></td>

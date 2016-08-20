@@ -26,7 +26,7 @@ export class MovementEditorComponent implements OnInit {
     this.movementsService
       .getMasters()
       .subscribe(res => {
-        this.masters = res.json()
+        this.masters = res
       })
 
     let id = this.activatedRoute.snapshot.params['id'];
@@ -34,9 +34,7 @@ export class MovementEditorComponent implements OnInit {
       this.movementsService
         .getMovementById(id)
         .subscribe(res => {
-          if (res.status == 200) {
-            this.movement = res.json() || {}
-          }
+          this.movement = res || {}
         });
     } else {
       this.movement = this.createMovement();

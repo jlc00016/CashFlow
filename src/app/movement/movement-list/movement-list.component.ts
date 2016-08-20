@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MovementsService, MovementModel } from '../../shared';
+import { MovementsService, MovementModel, CapitalizePipe } from '../../shared';
 import { ROUTER_DIRECTIVES} from '@angular/router';
 
 @Component({
@@ -7,7 +7,8 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
   selector: 'app-movement-list',
   templateUrl: 'movement-list.component.html',
   styleUrls: ['movement-list.component.css'],
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES],
+  pipes: [ CapitalizePipe ]
 })
 export class MovementListComponent implements OnInit {
   
@@ -19,8 +20,7 @@ export class MovementListComponent implements OnInit {
   ngOnInit() {
     this.movementsService.getMovements()
       .subscribe(res => {
-        if(res.status==200)
-          this.movements = res.json() || []
+        this.movements = res || []
       })
   }
 

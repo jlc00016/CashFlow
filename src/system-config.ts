@@ -42,6 +42,7 @@ const barrels: string[] = [
   'app/movement/movement-balance',
   'app/+about',
   'app/+legal-stuff',
+  'app/+security',
   /** @cli-barrel */
 ];
 

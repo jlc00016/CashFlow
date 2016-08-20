@@ -24,7 +24,7 @@ export class MovementComponent implements OnInit {
   ngOnInit() {
     this.movementsService.getTotals()
       .subscribe(res => {
-        this.totals = res.json() || {}
+        this.totals = res || {}
         console.log(JSON.stringify(this.totals));
       })
   }
